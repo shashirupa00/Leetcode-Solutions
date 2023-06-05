@@ -3,15 +3,11 @@ class Solution:
 
         prefix, maxSoFar = 0, float("-inf")
 
-        for num in nums:
+        for num in nums:        
+            prefix += num
+            maxSoFar = max(maxSoFar, prefix)
 
-            if prefix+num > 0:
-                prefix += num
-
-            else:
+            if prefix<0:
                 prefix = 0
                         
-            maxSoFar = max(maxSoFar, prefix, num) if prefix>0 else max(maxSoFar, num)
-
-
         return maxSoFar
