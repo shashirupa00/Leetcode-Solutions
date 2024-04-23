@@ -13,17 +13,10 @@ class Solution:
             aInBounds = a in range(rows)
             dInBounds = d in range(cols)
 
-            if a == rows and d == cols:
-                return True
+            if (a == rows or aInBounds) and (d == cols or dInBounds):
+                if (a == rows or land[a][b] == 0) and (d == cols or land[c][d] == 0):
+                    return True
 
-            if aInBounds and land[a][b] == 0 and d == cols:
-                return True
-            
-            if dInBounds and land[c][d] == 0 and a == rows:
-                return True
-
-            if aInBounds and dInBounds and land[a][b] == 0 and land[c][d] == 0:
-                return True
 
         def dfs(i, j):
 
