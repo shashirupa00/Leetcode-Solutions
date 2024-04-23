@@ -6,17 +6,6 @@ class Solution:
         res = []
         tempRes = [-1, -1]
 
-        def check(i, j):
-
-            a, b = i + 1, j
-            c, d = i, j + 1
-            aInBounds = a in range(rows)
-            dInBounds = d in range(cols)
-
-            if (a == rows or aInBounds) and (d == cols or dInBounds):
-                if (a == rows or land[a][b] == 0) and (d == cols or land[c][d] == 0):
-                    return True
-
 
         def dfs(i, j):
 
@@ -27,7 +16,13 @@ class Solution:
 
             visited.add((i, j))
 
-            if check(i, j):
+            a, b = i + 1, j
+            c, d = i, j + 1
+            aInBounds = a < rows
+            dInBounds = d < cols
+
+            if (a == rows or aInBounds) and (d == cols or dInBounds) and \
+               (a == rows or land[a][b] == 0) and (d == cols or land[c][d] == 0):
                 tempRes = [i, j]
 
             dfs(i + 1, j)
