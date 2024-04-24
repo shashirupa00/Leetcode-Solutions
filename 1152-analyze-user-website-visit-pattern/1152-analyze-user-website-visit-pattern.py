@@ -13,7 +13,7 @@ class Solution:
                 for p in seen_patterns:
                     pattern[p].add(user)
 
-        patternScore = {p: len(users) for p, users in pattern.items()}
+        patternScore = {p: len(u) for p, u in pattern.items()}
         maxScore = max(patternScore.values(), default=0)
 
         result = min((p for p in patternScore if patternScore[p] == maxScore), default=(), key=lambda x: x)
