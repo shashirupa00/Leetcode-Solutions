@@ -2,35 +2,20 @@ class Solution:
     def mostVisitedPattern(self, username: List[str], timestamp: List[int], website: List[str]) -> List[str]:
         
         hashMap = defaultdict(list)
-        pattern = defaultdict(int)
+        pattern = defaultdict(set)
 
-        for u, t, w in zip(username, timestamp, website):
-            hashMap[u].append((t, w))
-        
-        for u in hashMap:
-            hashMap[u].sort()
-        
+        for u, t, w in sorted(zip(username, timestamp, website), key=lambda x: (x[0], x[1])):
+            hashMap[u].append(w)
 
-        for u in hashMap:
-            if len(hashMap[u]) >= 3:
-                for i in range(len(hashMap[u])):
-                    p1 = hashMap[u][i][1]
-                    for j in range(i+1, len(hashMap[u])):
-                        p2 = hashMap[u][j][1]
-                        for k in range(j+1, len(hashMap[u])):
-                            p3 = hashMap[u][k][1]
-                            pattern[(p1, p2, p3)] += 1
+        for user, websites in hashMap.items():
+            if len(websites) >= 3:
+                seen_patterns = set(combinations(websites, 3))
+                for p in seen_patterns:
+                    pattern[p].add(user)
 
-        res, maxVal = [], 0
+        patternScore = {p: len(users) for p, users in pattern.items()}
+        maxScore = max(patternScore.values(), default=0)
 
-        print(pattern)
+        result = min((p for p in patternScore if patternScore[p] == maxScore), default=(), key=lambda x: x)
 
-        for key in pattern:
-            if pattern[key] >= maxVal:
-                if not res:
-                    res = key
-                else:
-                    res = min(res, key)
-                maxVal = pattern[key]
-
-        return list(res)
+        return list(result)
