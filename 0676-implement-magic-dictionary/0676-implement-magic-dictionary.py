@@ -14,33 +14,23 @@ class Trie:
 
         cur.isEnd = True
 
-    def search(self, word):
+    def search(self, word):  
 
-        diff = 0
-        root = self
-        print(word)
-
-        def dfs(i, cur):
-
-            nonlocal diff
-
+        def dfs(node, index, diff):
+            if index == len(word):
+                return diff == 1 and node.isEnd
             if diff > 1:
                 return False
 
-            if i == len(word):
-                return diff == 1 and cur.isEnd
-            
-            letter = word[i]
-            
-            if letter not in cur.children and diff == 0:
-                diff = 1
-                for nxt in cur.children:
-                   return dfs(i+1, cur.children[nxt])
-            
-            else:
-               return dfs(i+1, cur.children[letter])
-        
-        return dfs(0, root)
+            found = False
+            for char in node.children:
+                if char == word[index]:
+                    found |= dfs(node.children[char], index + 1, diff)
+                else:
+                    found |= dfs(node.children[char], index + 1, diff + 1)
+            return found
+
+        return dfs(self, 0, 0)
 
 class MagicDictionary:
 
