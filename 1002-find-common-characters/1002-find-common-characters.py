@@ -3,7 +3,6 @@ class Solution:
         
         arr = []
         setList = []
-        letters = []
         res = []
 
         for word in words:
