@@ -1,8 +1,6 @@
 class Solution:
     def judgeSquareSum(self, c: int) -> bool:
 
-        if c == 1 or c == 0: return True
-
         def binarySearch(t):
 
             l, r = 0, c
@@ -22,7 +20,7 @@ class Solution:
             
             return False
         
-        a = 1
+        a = 0
 
         while a * a <= c:
             b = c - (a**2)
