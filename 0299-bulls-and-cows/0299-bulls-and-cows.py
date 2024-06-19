@@ -16,9 +16,11 @@ class Solution:
         
         for i in range(len(arr)):
 
+            x = secret[arr[i]]
+
             if secret[arr[i]] in hashMap:
                 cows += 1
-                hashMap[secret[i]] -= 1
-                if not hashMap[secret[i]]: del hashMap[secret[i]]
+                hashMap[secret[arr[i]]] -= 1
+                if not hashMap[secret[arr[i]]]: del hashMap[secret[arr[i]]]
     
         return str(bulls) + 'A' + str(cows) + 'B'
