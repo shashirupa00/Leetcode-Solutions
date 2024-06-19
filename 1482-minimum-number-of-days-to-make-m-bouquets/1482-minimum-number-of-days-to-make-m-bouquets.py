@@ -4,16 +4,15 @@ class Solution:
         if len(bloomDay) < m * k:
             return -1
         
-        arr = [i for i in range(min(bloomDay), max(bloomDay) + 1)]
         res = max(bloomDay)
 
-        l, r = 0, len(arr) - 1
+        l, r = min(bloomDay), max(bloomDay)
 
         while l <= r:
 
             mid = (l + r) // 2
             
-            curDay = arr[mid]
+            curDay = mid
             boquets = 0
             curFlowers = 0
 
