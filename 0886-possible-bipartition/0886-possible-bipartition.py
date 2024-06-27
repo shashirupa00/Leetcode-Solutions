@@ -2,7 +2,6 @@ class Solution:
     def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
 
         visited = set()
-        res = True
 
         def bfs(start):
         
