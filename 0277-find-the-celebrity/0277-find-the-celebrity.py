@@ -14,15 +14,10 @@ class Solution:
         
         flag = True
 
-        print(celeb)
-
         for i in range(n):
-            
-            if i != celeb:
-                print(i, celeb, knows(i, celeb))
 
-                if (not knows(i, celeb) or knows(celeb, i)):
-                    flag = False
+            if i != celeb and (not knows(i, celeb) or knows(celeb, i)):
+                flag = False
         
         return celeb if flag else -1
         
