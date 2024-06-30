@@ -5,7 +5,6 @@ class Solution:
         deq = collections.deque([])
         graph = collections.defaultdict(list)
         degree = [0 for i in range(n)]
-        visited = set()
 
         for u, v in edges:
             graph[u].append(v)
@@ -26,7 +25,6 @@ class Solution:
                 degree[nxt] -= 1
                 if not degree[nxt]:
                     deq.append(nxt)
-        
         
         for node in topOrder:
             for nxt in graph[node]:
