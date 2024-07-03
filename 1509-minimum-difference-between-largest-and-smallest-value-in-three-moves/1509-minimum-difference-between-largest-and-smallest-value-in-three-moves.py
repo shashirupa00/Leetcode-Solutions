@@ -5,10 +5,6 @@ class Solution:
             return 0
 
         nums.sort()
-
-        # [0, 1, 2, 3, 4]
-        #  i  j    
-
         i, j = 0, -4
 
         res = float("inf")
