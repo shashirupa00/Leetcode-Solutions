@@ -22,7 +22,7 @@ class Solution:
 
         def sortKeys(log):
             identifier, content = log.split(maxsplit=1)
-            return content
+            return (0, content, identifier) if content[0].isalpha() else (1,)
         
         letterLogs = sorted(letterLogs, key=sortKeys)
 
