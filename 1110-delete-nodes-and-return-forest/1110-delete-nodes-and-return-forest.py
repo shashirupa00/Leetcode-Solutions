@@ -17,7 +17,7 @@ class Solution:
             
             dfs(node.left)
             dfs(node.right)
-            
+
             if node.left and node.left.val in to_delete:
                 node.left = None
             
@@ -36,5 +36,7 @@ class Solution:
             return
         
         dfs(root)
+        
         if root.val not in to_delete: res.append(root)
+
         return res
