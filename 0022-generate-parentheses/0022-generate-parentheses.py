@@ -5,7 +5,7 @@ class Solution:
 
         def backTrack(cur, count):
             
-            if len(cur) > n * 2 or count < 0 or count > n:
+            if len(cur) > n * 2 or count < 0:
                 return False
             
             if not count and len(cur) == n * 2:
