@@ -60,6 +60,4 @@ class Solution:
         leafsDfs(root)
         rightDfs(root.right)
 
-        print(left, leafs, right)
-
         return [root.val] + left + leafs + right
