@@ -46,13 +46,11 @@ class Solution:
                 if nxt not in visited and dist + 1 <= distance:
                     dfs2(nxt, dist + 1)
                     if not nxt.left and not nxt.right:
-                        print("child", nxt.val)
                         res += 1
             
             return
         
         for node in leafNodes:
-            print("parent", node.val)
             visited = set()
             dfs2(node, 0)
         
