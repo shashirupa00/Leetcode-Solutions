@@ -1,31 +1,20 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-
+        
         res = []
 
-        def dfs(curr, open, close):
-
-            if open == close == n:
-                res.append("".join(curr))
-                return
+        def backTrack(cur, count):
             
-            if open >= close and open <= n:
-                curr.append('(')
-                dfs(curr, open+1, close)
-                curr.pop()
+            if len(cur) > n * 2 or count < 0 or count > n:
+                return False
             
-            if close < open and close <=n:
-                curr.append(')')
-                dfs(curr, open, close+1)
-                curr.pop()
-        
-        dfs([], 0, 0)
+            if not count and len(cur) == n * 2:
+                res.append(cur[:])
+            
+            backTrack(cur + "(", count + 1)
+            backTrack(cur + ")", count - 1)
 
+            return
+
+        backTrack("", 0)
         return res
-                
-
-
-            
-
-
-        
