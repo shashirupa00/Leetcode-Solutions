@@ -7,29 +7,25 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        
+        res = root
 
-        minVal, maxVal = min(p.val,q.val), max(p.val,q.val)
-        res = 0
-
-        def dfs(node):
-
+        def dfs(node, low, high):
+            
             nonlocal res
 
-            if minVal <= node.val and node.val <= maxVal:
-                res = node
-                return 
+            if not node:
+                return
+
+            if not low < p.val < high or not low < q.val < high:
+                return
             
-            elif maxVal < node.val:
-                dfs(node.left)
-            
-            elif minVal > node.val:
-                dfs(node.right)
-            
+            res = node
+
+            dfs(node.left, low, node.val)
+            dfs(node.right, node.val, high)
+
             return
-
-        dfs(root)
+        
+        dfs(root, float("-inf"), float("inf"))
         return res
-
-
-        
-        
