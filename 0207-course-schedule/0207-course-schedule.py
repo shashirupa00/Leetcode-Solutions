@@ -1,41 +1,33 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        
+        edges = defaultdict(list)
 
-        if not prerequisites:
-            return True 
-
-        hashMap = collections.defaultdict(list)
-        visited = set()
-
-        for i in range(numCourses):
-            hashMap[i] = []
-
-        for a, b in prerequisites:
-            hashMap[a].append(b) 
-
-        def dfs(course):
-            if course in visited:
-                return False
+        for src, dst in prerequisites:
+            edges[src].append(dst)
+        
+        def dfs(node, visited):
             
-            if hashMap[course] == []:
+            if not len(edges[node]):
                 return True
             
-            visited.add(course)
+            visited.add(node)
 
-            for i in range(len(hashMap[course])):
-                
-                if not dfs(hashMap[course][i]):
+            res = True
+
+            for nxt in edges[node]:
+                if nxt not in visited:
+                    res = res and dfs(nxt, visited)
+                else:
                     return False
+
+            visited.remove(node)
             
-            visited.remove(course)
-            hashMap[course] = []
-
-            return True
-                                    
-        for c in range(numCourses):
-            if not dfs(c): return False
-
-        return True
-
-
+            return res
+            # returns a boolean value
         
+        for i in range(numCourses):
+            if not dfs(i, set()):
+                return False
+        
+        return True
