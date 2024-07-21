@@ -2,29 +2,30 @@ class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         
         edges = defaultdict(list)
+        visited = set()
 
         for src, dst in prerequisites:
             edges[src].append(dst)
         
-        def dfs(node, visited):
+        def dfs(node, cycle):
             
-            if not len(edges[node]):
+            if not len(edges[node]) or node in visited:
                 return True
             
+            cycle.add(node)
             visited.add(node)
 
             res = True
 
             for nxt in edges[node]:
-                if nxt not in visited:
-                    res = res and dfs(nxt, visited)
+                if nxt not in cycle:
+                    res = res and dfs(nxt, cycle)
                 else:
                     return False
-
-            visited.remove(node)
+            
+            cycle.remove(node)
             
             return res
-            # returns a boolean value
         
         for i in range(numCourses):
             if not dfs(i, set()):
