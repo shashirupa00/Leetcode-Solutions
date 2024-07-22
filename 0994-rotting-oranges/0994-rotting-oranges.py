@@ -1,36 +1,34 @@
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        rows, cols = len(grid), len(grid[0])
-        deq = collections.deque([])
-        directions = [[0,1],[1,0],[-1,0],[0,-1]]
-        fresh, minutes = 0, -1
-
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == 2:
-                    deq.append((i,j))
-                elif grid[i][j] == 1:
-                    fresh += 1
         
-        if not deq and not fresh: return 0
-                
-        while deq:
-            for i in range(len(deq)):
-                r, c = deq.popleft()
-                for x,y in directions:
-                    a, b = r+x, c+y
+        rows, cols = len(grid), len(grid[0])
+        oranges, rotten = 0, 0
+        deq = collections.deque([])
+        visited = set()
+        minutes = -1
 
-                    if (a in range(rows) and
-                    b in range(cols) and
-                    grid[a][b] == 1):
-                        grid[a][b] = 2
-                        deq.append((a,b))
-
-            minutes += 1
-                                       
         for i in range(rows):
             for j in range(cols):
-                if grid[i][j] == 1:
-                    return -1
+                if grid[i][j]:
+                    oranges += 1
+                if grid[i][j] == 2:
+                    deq.append((i, j))
+                    visited.add((i, j))
+
+        while deq:
+            for _ in range(len(deq)):
+                
+                x, y = deq.popleft()
+                rotten += 1
+
+                for dx, dy in [[0, 1], [1, 0], [-1, 0], [0, -1]]:
+                    nx, ny = x + dx, y + dy
+                    if (0 <= nx < rows and 0 <= ny < cols and  
+                    (nx, ny) not in visited and grid[nx][ny] == 1):
+                        deq.append((nx, ny))
+                        visited.add((nx, ny))
+
+            minutes += 1
         
-        return minutes
+        return minutes if rotten == oranges else -1
+        
