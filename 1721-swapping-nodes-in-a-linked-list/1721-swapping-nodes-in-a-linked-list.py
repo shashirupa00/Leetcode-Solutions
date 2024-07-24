@@ -26,6 +26,6 @@ class Solution:
             pos += 1
             cur = cur.next
 
-        if node1 != node2: node1.val, node2.val = node2.val, node1.val
+        node1.val, node2.val = node2.val, node1.val
 
         return head
