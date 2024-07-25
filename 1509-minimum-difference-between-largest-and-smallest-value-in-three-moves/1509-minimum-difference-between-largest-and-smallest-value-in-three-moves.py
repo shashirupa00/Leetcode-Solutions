@@ -5,14 +5,15 @@ class Solution:
             return 0
 
         nums.sort()
-        i, j = 0, -4
-
         res = float("inf")
 
-        while i < 4 and j < 0:
+        print(nums)
 
-            res = min(res, nums[j] - nums[i])
-            j += 1
+        i, j = 0 , -4
+
+        while i < 4 and j < 0:
+            res = min(res, abs(nums[i] - nums[j]))
             i += 1
-        
+            j += 1
+
         return res
