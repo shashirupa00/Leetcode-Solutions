@@ -1,45 +1,37 @@
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
-
+        
         rows, cols = len(heights), len(heights[0])
-        atl = set()
-        pac = set()
-        # directions = [[0,1], [1,0], [0,-1], [-1,0]]
+        pSet = set()
+        aSet = set()
         res = []
 
+        def dfs(i, j, prev, ocean, visited):
 
-        def dfs(i, j, reach, prev):
-            if (i < 0 or 
-            i >= rows or
-            j < 0 or
-            j >= cols or
-            (i,j) in reach or
-            heights[i][j] < prev):
-                    return
-
-            reach.add((i,j))
+            if i not in range(rows) or j not in range(cols) or (i, j) in visited or heights[i][j] < prev:
+                return
             
-            dfs(i+1, j, reach, heights[i][j])
-            dfs(i-1, j, reach, heights[i][j])
-            dfs(i, j+1, reach, heights[i][j])
-            dfs(i, j-1, reach, heights[i][j])
-        
-        for c in range(cols):
-            dfs(0, c, pac, heights[0][c])
-            dfs(rows - 1, c, atl, heights[rows - 1][c])
+            ocean.add((i, j))
+            visited.add((i, j))
 
-        for r in range(rows):
-            dfs(r, 0, pac, heights[r][0])
-            dfs(r, cols - 1, atl, heights[r][cols - 1])
+            dfs(i+1, j, heights[i][j], ocean, visited)
+            dfs(i, j+1, heights[i][j], ocean, visited)
+            dfs(i-1, j, heights[i][j], ocean, visited)
+            dfs(i, j-1, heights[i][j], ocean, visited)
+
+            return
+        
+        for i in range(cols):
+            dfs(rows-1, i, float("-inf"), aSet, set())
+            dfs(0, i, float("-inf"), pSet, set())
         
         for i in range(rows):
-            for j in range(cols):
-                if (i,j) in atl and (i,j) in pac:
-                    res.append([i,j])
-
+            dfs(i, cols-1, float("-inf"), aSet, set())
+            dfs(i, 0, float("-inf"), pSet, set())
+        
+        for subList in aSet:
+            if subList in pSet:
+                res.append(list(subList))
+        
         return res
-
-
-
-
         
