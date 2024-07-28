@@ -3,33 +3,33 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
+        
         rows, cols = len(board), len(board[0])
-        directions = [[0,1],[1,0],[-1,0],[0,-1]]
+        visited = set()
 
         def dfs(i, j):
-
-            if i not in range(rows) or j not in range(cols) or board[i][j] != "O":
+            
+            if not (0 <= i < rows) or not (0 <= j < cols) or (i, j) in visited or board[i][j] == 'X':
                 return
             
-            board[i][j] = "T"
-            for x, y in directions:
-                r, c = i+x, j+y
-                dfs(r,c)
-            
+            visited.add((i, j))
+
+            dfs(i + 1, j)
+            dfs(i, j + 1)
+            dfs(i - 1, j)
+            dfs(i, j - 1)
+
             return
         
+        for j in range(cols):
+            dfs(0, j)
+            dfs(rows - 1, j)
+        
         for i in range(rows):
-            for j in range(cols):
-                if (board[i][j] == "O" and 
-                (i in (0, rows-1) or j in (0, cols-1))):
-                    dfs(i, j)
+            dfs(i, 0)
+            dfs(i, cols - 1)
         
         for i in range(rows):
             for j in range(cols):
-                if board[i][j] == "O":
-                    board[i][j] = "X"
-        
-        for i in range(rows):
-            for j in range(cols):
-                if board[i][j] == "T":
-                    board[i][j] = "O"
+                if board[i][j] == 'O' and (i, j) not in visited:
+                    board[i][j] = 'X'
