@@ -6,21 +6,23 @@ class Node:
         self.neighbors = neighbors if neighbors is not None else []
 """
 
+from typing import Optional
 class Solution:
-    def cloneGraph(self, node: 'Node') -> 'Node':
-
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        
         hashMap = {}
 
         def dfs(node):
-
+            
             if node in hashMap:
                 return hashMap[node]
             
             copy = Node(node.val)
             hashMap[node] = copy
-            for n in node.neighbors:
-                copy.neighbors.append(dfs(n))
-            return copy
-        
-        return None if not node else dfs(node) 
 
+            for nxt in node.neighbors:
+                copy.neighbors.append(dfs(nxt))
+            
+            return copy
+                    
+        return dfs(node) if node else None
