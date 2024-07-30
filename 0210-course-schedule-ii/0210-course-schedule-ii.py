@@ -1,38 +1,37 @@
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        
+        hashMap = defaultdict(list)
 
-        hashMap = {i : [] for i in range(numCourses)}
-        visited, cycle = set(), set()
+        for dst, src in prerequisites:
+            hashMap[src].append(dst)
+
+        visited = set()
         res = []
 
-        for course, prereq in prerequisites:
-            hashMap[course].append(prereq)
-
-        
-        def dfs(course):
-
-            if course in cycle:
+        def dfs(node, cycle):
+            
+            if node in cycle:
                 return False
             
-            if course in visited:
+            if node in visited:
                 return True
-            
-            cycle.add(course)
 
-            for crs in hashMap[course]:
-                if not dfs(crs): return False
+            visited.add(node)
+            cycle.add(node)
+
+            for nxt in hashMap[node]:
+                if not dfs(nxt, cycle):
+                    return False
             
-            visited.add(course)
-            cycle.remove(course)
-            res.append(course)
+            res.append(node)
+            cycle.remove(node)
 
             return True
-            
-        for crs in range(numCourses):
 
-            if not dfs(crs): return []
+        for i in range(numCourses):
+            if i not in visited:
+                if not dfs(i, set()):
+                    return []
         
-        return res
-
-
-        
+        return res[::-1]
