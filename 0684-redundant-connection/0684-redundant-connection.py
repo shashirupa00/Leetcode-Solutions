@@ -4,35 +4,36 @@ class Solution:
         par = [i for i in range(len(edges)+1)]
         rank = [1 for i in range(len(edges)+1)]
 
-        def find(p):
-          
-            while p != par[p]:
-                p = par[p]
-            
-            return p
-        
-        def union(n1, n2):
+        def findParent(node):
 
-            p1, p2 = find(n1), find(n2)
+            while par[node] != node:
+                node = par[node]
+            
+            return node
+        
+        def findRank(a, b):
+
+            p1, p2 = findParent(a), findParent(b)
 
             if p1 == p2:
                 return False
-            
-            elif rank[p1] >= rank[p2]:
+
+            if rank[p1] >= rank[p2]:
                 par[p2] = p1
                 rank[p1] += rank[p2]
-
+            
             else:
-                par[p1] = p2
+                par[p1]= p2
                 rank[p2] += rank[p1]
             
             return True
-
-        for s, e in edges:
-            if not union(s,e): return [s,e]
+                
         
+        for a, b in edges:
+            if not findRank(a, b): return [a, b]
+
 
             
 
 
-        
+
