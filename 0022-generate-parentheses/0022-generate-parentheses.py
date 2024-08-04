@@ -3,18 +3,20 @@ class Solution:
         
         res = []
 
-        def backTrack(cur, count):
+        def backTrack(cur, openCount):
             
-            if len(cur) > n * 2 or count < 0:
-                return False
+            if len(cur) >= n*2:
+                if openCount == 0:
+                    res.append(cur[:])
+                return
             
-            if not count and len(cur) == n * 2:
-                res.append(cur[:])
-            
-            backTrack(cur + "(", count + 1)
-            backTrack(cur + ")", count - 1)
+            backTrack(cur + "(", openCount + 1)
+
+            if openCount > 0:
+                backTrack(cur + ")", openCount - 1)
 
             return
-
+        
         backTrack("", 0)
+
         return res
