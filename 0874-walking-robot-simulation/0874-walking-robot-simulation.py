@@ -2,13 +2,11 @@ class Solution:
     def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
         
         obstacles = set([tuple(o) for o in obstacles])
-        curDirection = (0, 1) # -1: N -> E, E -> S, S -> W, W -> N ; -2: N -> W, W -> S, S -> E, E -> N
+        curDirection = (0, 1)
         leftDirection = {(0, 1): (-1, 0), (-1, 0): (0, -1), (0, -1): (1, 0), (1, 0): (0, 1)}
         rightDirection = {(0, 1): (1, 0), (1, 0): (0, -1), (0, -1): (-1, 0), (-1, 0): (0, 1)}
         res = 0
         curPos = [0, 0]
-
-        print(obstacles)
 
         for num in commands:
 
@@ -25,14 +23,10 @@ class Solution:
 
             for i in range(num):
 
-                if x:
-                    if (tempX + x, tempY) in obstacles:
-                        break
+                if x and (tempX + x, tempY) not in obstacles:
                     tempX += x
                 
-                if y:
-                    if (tempX, tempY + y) in obstacles:
-                        break
+                if y and (tempX, tempY + y) not in obstacles:
                     tempY += y
 
             curPos = [tempX, tempY]
