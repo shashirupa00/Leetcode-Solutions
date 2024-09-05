@@ -10,18 +10,14 @@ class Solution:
 
         for num in commands:
 
-            if num == -1:
-                curDirection = rightDirection[curDirection]
-                continue
-            
-            if num == -2:
-                curDirection = leftDirection[curDirection]
+            if num == -1 or num == -2:
+                curDirection = rightDirection[curDirection] if num == -1 else leftDirection[curDirection]
                 continue
 
             x, y = curDirection
             tempX, tempY = curPos[0], curPos[1]
 
-            for i in range(num):
+            for _ in range(num):
 
                 if x and (tempX + x, tempY) not in obstacles:
                     tempX += x
