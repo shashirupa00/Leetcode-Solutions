@@ -10,20 +10,20 @@ class Solution:
         
         res = root
 
-        def dfs(node, left, right):
+        def dfs(node, low, high):
             
             nonlocal res
 
             if not node:
                 return
             
-            if not left < p.val < right or not left < q.val < right:
+            if not low < p.val < high or not low < q.val < high:
                 return
             
             res = node
 
-            dfs(node.left, left, node.val)
-            dfs(node.right, node.val, right)
+            dfs(node.left, low, node.val)
+            dfs(node.right, node.val, high)
 
             return
         
