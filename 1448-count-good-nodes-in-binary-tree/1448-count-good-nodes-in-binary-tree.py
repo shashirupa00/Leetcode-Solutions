@@ -12,9 +12,9 @@ class Solution:
         def dfs(node, maxVal):
             
             nonlocal res
-            
+
             if not node:
-                return
+                return None
             
             if node.val >= maxVal:
                 res += 1
@@ -22,7 +22,7 @@ class Solution:
             dfs(node.left, max(maxVal, node.val))
             dfs(node.right, max(maxVal, node.val))
 
-            return 
-        
+            return
+
         dfs(root, root.val)
         return res
