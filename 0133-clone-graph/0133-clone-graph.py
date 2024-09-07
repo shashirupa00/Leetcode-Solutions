@@ -13,16 +13,16 @@ class Solution:
         hashMap = {}
 
         def dfs(node):
-            
+
             if node in hashMap:
                 return hashMap[node]
             
-            copy = Node(node.val)
-            hashMap[node] = copy
+            copyNode = Node(node.val)
+            hashMap[node] = copyNode
 
             for nxt in node.neighbors:
-                copy.neighbors.append(dfs(nxt))
-            
-            return copy
-                    
+                copyNode.neighbors.append(dfs(nxt))
+
+            return copyNode
+
         return dfs(node) if node else None
