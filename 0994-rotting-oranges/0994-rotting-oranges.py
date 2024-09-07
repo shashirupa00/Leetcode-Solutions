@@ -2,33 +2,32 @@ class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
         
         rows, cols = len(grid), len(grid[0])
-        oranges, rotten = 0, 0
-        deq = collections.deque([])
+        totalOranges, rottenOranges = 0, 0
         visited = set()
-        minutes = -1
+        deq = collections.deque([])
+        res = 0
 
         for i in range(rows):
             for j in range(cols):
-                if grid[i][j]:
-                    oranges += 1
                 if grid[i][j] == 2:
                     deq.append((i, j))
-                    visited.add((i, j))
-
+                    rottenOranges += 1
+                    totalOranges += 1
+                elif grid[i][j] == 1:
+                    totalOranges += 1
+        
         while deq:
             for _ in range(len(deq)):
                 
-                x, y = deq.popleft()
-                rotten += 1
+                i, j = deq.popleft()
 
                 for dx, dy in [[0, 1], [1, 0], [-1, 0], [0, -1]]:
-                    nx, ny = x + dx, y + dy
-                    if (0 <= nx < rows and 0 <= ny < cols and  
-                    (nx, ny) not in visited and grid[nx][ny] == 1):
-                        deq.append((nx, ny))
-                        visited.add((nx, ny))
-
-            minutes += 1
+                    x, y = i + dx, j + dy
+                    if x not in range(rows) or y not in range(cols) or (x, y) in visited or grid[x][y] != 1:
+                        continue
+                    rottenOranges += 1
+                    deq.append((x, y))
+                    visited.add((x, y))
+            res += 1
         
-        return minutes if rotten == oranges else -1
-        
+        return res - 1 if totalOranges == rottenOranges else -1
