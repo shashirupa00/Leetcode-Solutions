@@ -1,34 +1,25 @@
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
         
-        par = [i for i in range(n)]
-        rank = [1 for i in range(n)]
+        visited = set()
+        hashMap = defaultdict(list)
+        res = 0
 
-        def findParent(node):
-            
-            while par[node] != node:
-                node = par[node]
-            
-            return node
+        for src, dst in edges:
+            hashMap[src].append(dst)
+            hashMap[dst].append(src)
 
-        def unionFind(node1, node2):
+        def dfs(node):
             
-            parent1, parent2 = findParent(node1), findParent(node2)
+            visited.add(node)
 
-            if rank[parent1] >= rank[parent2]:
-                par[parent2] = parent1
-                rank[parent1] += rank[parent2]
-            
-            else:
-                par[parent1] = parent2
-                rank[parent2] += rank[parent1]
-            
-            return
+            for nxt in hashMap[node]:
+                if nxt not in visited:
+                    dfs(nxt)
         
-        for node1, node2 in edges:
-            unionFind(node1, node2)
+        for node in range(n):
+            if node not in visited:
+                res += 1
+                dfs(node)
         
-        for i in range(n):
-            par[i] = findParent(i)
-        
-        return len(set(par))
+        return res
