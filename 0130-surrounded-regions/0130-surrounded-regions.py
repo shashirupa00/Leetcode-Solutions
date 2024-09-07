@@ -3,13 +3,13 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
-        
+
         rows, cols = len(board), len(board[0])
         visited = set()
 
         def dfs(i, j):
             
-            if not (0 <= i < rows) or not (0 <= j < cols) or (i, j) in visited or board[i][j] == 'X':
+            if i not in range(rows) or j not in range(cols) or (i, j) in visited or board[i][j] != 'O':
                 return
             
             visited.add((i, j))
@@ -20,14 +20,13 @@ class Solution:
             dfs(i, j - 1)
 
             return
-        
-        for j in range(cols):
-            dfs(0, j)
-            dfs(rows - 1, j)
-        
+
         for i in range(rows):
-            dfs(i, 0)
-            dfs(i, cols - 1)
+            for j in range(cols):
+                if board[i][j] == 'O' and (i in (0, rows - 1) or j in (0, cols - 1)):
+                    dfs(i, j)
+        
+        print(visited)
         
         for i in range(rows):
             for j in range(cols):
