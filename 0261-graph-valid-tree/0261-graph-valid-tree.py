@@ -1,22 +1,27 @@
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
 
-        if len(edges) != n - 1: return False
-    
+        if len(edges) >= n:
+            return False
+        
         hashMap = defaultdict(list)
+
+        for a, b in edges:
+            hashMap[a].append(b)
+            hashMap[b].append(a)
+        
         visited = set()
 
-        for src, dst in edges:
-            hashMap[src].append(dst)
-            hashMap[dst].append(src)
-        
         def dfs(node):
             
-            if node in visited: return
             visited.add(node)
+
             for nxt in hashMap[node]:
-                dfs(nxt)
+                if nxt not in visited:
+                    dfs(nxt)
 
+            return
+        
         dfs(0)
-
+        
         return len(visited) == n
