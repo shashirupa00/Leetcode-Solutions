@@ -7,7 +7,6 @@ class Solution:
 
             if char == '[':
                 stack.append(char)
-                continue
 
             elif char == ']':
 
