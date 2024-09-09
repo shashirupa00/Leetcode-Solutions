@@ -6,10 +6,8 @@ class Solution:
 
         for i in range(len(s) - 1, -1, -1):
             for word in wordDict:
-                n = len(word)
-                cur = s[i : i + n]
-                if s[i : i + n] == word:
-                    dp[i] = dp[i + n]
+                if s[i : i + len(word)] == word:
+                    dp[i] = dp[i + len(word)]
                     if dp[i]:
                         break
         
