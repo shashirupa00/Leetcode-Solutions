@@ -8,12 +8,9 @@ class Solution:
         
         def findGcd(num1, num2):
 
-            if num1 < num2:
-                num1, num2 = num2, num1
-            
             res = 1
             
-            for i in range(1, num2 + 1):
+            for i in range(1, min(num1, num2) + 1):
                 if num2 % i == 0 and num1 % i == 0:
                     res = i
             
