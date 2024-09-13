@@ -5,11 +5,8 @@ class Solution:
         dp[0] = 1
 
         for i in range(len(coins)):
-            for j in range(1, amount+1):
-
-                change = j - coins[i]                
-                x = 0 if change<0 else dp[change]
-                
+            for j in range(1, amount+1):          
+                x = 0 if j - coins[i] < 0 else dp[j - coins[i]]
                 dp[j] = dp[j] + x
         
         return dp[-1]
