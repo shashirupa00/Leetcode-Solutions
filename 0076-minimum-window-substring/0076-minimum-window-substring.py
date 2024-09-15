@@ -1,43 +1,52 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
+        if not t or not s:
+            return ""
 
-        if len(s) < len(t): return ""
+        # Dictionary to keep a count of all the unique characters in t
+        dict_t = Counter(t)
 
-        i, j = 0, 0
-        res = ""
-        minLen = float("inf")
-        sMap, tMap = {}, {}
+        # Number of unique characters in t, which need to be present in the desired window
+        required = len(dict_t)
 
-        for char in t:
-            tMap[char] = 1 + tMap.get(char, 0)
+        # left and right pointer
+        l, r = 0, 0
 
-        have, need = 0, len(tMap)
+        # formed is used to keep track of how many unique characters in t are present in the current window in its desired frequency
+        formed = 0
 
-        while j < len(s):
-            char = s[j]
+        # Dictionary to keep a count of all the unique characters in the current window
+        window_counts = {}
 
-            if char in tMap:
-                sMap[char] = 1 + sMap.get(char, 0)
+        # ans tuple of the form (window length, left, right)
+        ans = float("inf"), None, None
 
-                if sMap[char] == tMap[char]:
-                    have += 1
+        while r < len(s):
+            # Add one character from the right to the window
+            character = s[r]
+            window_counts[character] = window_counts.get(character, 0) + 1
 
-            while have == need:
+            # If the frequency of the current character added equals to the desired count in t then increment the formed count by 1
+            if character in dict_t and window_counts[character] == dict_t[character]:
+                formed += 1
 
-                if minLen > (j-i+1):
-                    minLen = j-i+1
-                    res = s[i:j+1]
+            # Try and contract the window till the point where it ceases to be 'desirable'
+            while l <= r and formed == required:
+                character = s[l]
 
-                if s[i] in sMap:
-                    sMap[s[i]] -= 1
+                # Save the smallest window until now
+                if r - l + 1 < ans[0]:
+                    ans = (r - l + 1, l, r)
 
-                    if sMap[s[i]] < tMap[s[i]]:
-                        have -= 1
+                # The character at the position pointed by the `left` pointer is no longer a part of the window
+                window_counts[character] -= 1
+                if character in dict_t and window_counts[character] < dict_t[character]:
+                    formed -= 1
 
-                i += 1
-            j += 1
+                # Move the left pointer ahead, this would help to look for a new window
+                l += 1    
 
-        return res                    
+            # Keep expanding the window once we are done contracting
+            r += 1    
 
-        
-         
+        return "" if ans[0] == float("inf") else s[ans[1] : ans[2] + 1]
