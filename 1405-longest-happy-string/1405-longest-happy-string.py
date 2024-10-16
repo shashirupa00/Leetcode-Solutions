@@ -1,45 +1,43 @@
 class Solution:
     def longestDiverseString(self, a: int, b: int, c: int) -> str:
-        
+       
+        hashMap = {'a': a, 'b': b, 'c': c}
         minHeap = []
-        
-        if a != 0:
-            minHeap.append((-a, 'a'))
-        
-        if b != 0:
-            minHeap.append((-b, 'b'))
-        
-        if c != 0:
-            minHeap.append((-c, 'c'))
-            
+
+        for key, value in hashMap.items():
+            if value:
+                minHeap.append((-1*value, key))
+
         heapq.heapify(minHeap)
+        prevCount = 0
         res = ""
-        curCount = 0
 
         while minHeap:
             
-            temp = None
-
-            if res and res[-1] == minHeap[0][1] and curCount == 2:
-                
-                temp = heapq.heappop(minHeap)
-                if not minHeap:
-                    return res
-            
             count, char = heapq.heappop(minHeap)
-            
-            if res and char == res[-1]:
-                curCount += 1
-            
-            else:
-                curCount = 1
+            count *= -1
 
-            if count < 0: res += char
+            if len(res) > 1 and res[-1] == res[-2] == char:
 
-            if count + 1 < 0:
-                heapq.heappush(minHeap, (count + 1, char))
-            
-            if temp:
-                heapq.heappush(minHeap, temp)
-        
+                if not minHeap:
+                    break
+
+                newCount, newChar = heapq.heappop(minHeap)
+                newCount *= -1
+                
+                res += newChar
+                newCount -= 1
+
+                if newCount > 0:
+                    heapq.heappush(minHeap, (-1*newCount, newChar))
+                
+                heapq.heappush(minHeap, (-1*count, char))
+                
+            else:                
+                res += char
+                count -= 1
+
+                if count > 0:
+                    heapq.heappush(minHeap, (-1*count, char))
+
         return res
