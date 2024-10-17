@@ -1,23 +1,21 @@
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        res = []
 
-        res, curr = [], []
+        def backTrack(i, arr):
+            
+            if sum(arr) >= target or i >= len(candidates):
 
-        def dfs(i, curr, total):
+                if sum(arr) == target:
+                    res.append(arr[:])
 
-            if total == target:
-                res.append(curr.copy())
                 return
             
-            if i >= len(candidates) or total > target:
-                return
+            backTrack(i, arr + [candidates[i]])
+            backTrack(i + 1, arr)
 
-            curr.append(candidates[i])
-            dfs(i, curr, total+candidates[i])
+            return
 
-            curr.pop()
-            dfs(i+1, curr, total)
-
-        dfs(0, [], 0)
-
+        backTrack(0, [])
         return res
