@@ -13,12 +13,13 @@ class Solution:
         res = []
 
         while deq:
-            tempLevel = []
-            for i in range(len(deq)):
+
+            level = []
+
+            for _ in range(len(deq)):
 
                 cur = deq.popleft()
-
-                tempLevel.append(cur.val)
+                level.append(cur.val)
 
                 if cur.left:
                     deq.append(cur.left)
@@ -26,6 +27,6 @@ class Solution:
                 if cur.right:
                     deq.append(cur.right)
             
-            res.append(tempLevel)
+            res.append(level)
         
         return res
