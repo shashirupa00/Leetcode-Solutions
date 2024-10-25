@@ -1,34 +1,35 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         
-        edges = defaultdict(list)
+        hashMap = defaultdict(list)
         visited = set()
 
         for src, dst in prerequisites:
-            edges[src].append(dst)
+            hashMap[src].append(dst)
+
         
-        def dfs(node, cycle):
+        def dfs(course, cycle):
             
-            if not len(edges[node]) or node in visited:
+            if course in cycle:
+                return False
+            
+            if course in visited:
                 return True
             
-            cycle.add(node)
-            visited.add(node)
+            visited.add(course)
+            cycle.add(course)
 
-            res = True
-
-            for nxt in edges[node]:
-                if nxt not in cycle:
-                    res = res and dfs(nxt, cycle)
-                else:
+            for nxt in hashMap[course]:
+                if not dfs(nxt, cycle):
                     return False
             
-            cycle.remove(node)
-            
-            return res
+            cycle.remove(course)
+
+            return True
         
         for i in range(numCourses):
-            if not dfs(i, set()):
-                return False
+            if i not in visited:
+                if not dfs(i, set()):
+                    return False
         
-        return True
+        return len(visited) == numCourses
