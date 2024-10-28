@@ -5,10 +5,10 @@
 #         self.next = next
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-
+        
         def helper(l1, l2):
 
-            head = ListNode(0)
+            head = ListNode()
             cur = head
 
             while l1 and l2:
@@ -22,21 +22,18 @@ class Solution:
                     l1 = l1.next
                 
                 cur = cur.next
-            
+
             if l1:
                 cur.next = l1
             
             if l2:
                 cur.next = l2
-
+            
             return head.next
 
-        
+
         while len(lists) > 1:
-
             l1, l2 = lists.pop(), lists.pop()
-            newList = helper(l1, l2)
-
-            lists.append(newList)
+            lists.append(helper(l1, l2))
         
         return lists[0] if lists else None
