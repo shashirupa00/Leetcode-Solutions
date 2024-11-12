@@ -1,28 +1,39 @@
 class Solution:
     def reorganizeString(self, s: str) -> str:
         
-        counter = Counter(s)
-        minHeap = [(-counter[key], key) for key in counter]
-        heapq.heapify(minHeap)
         res = ""
+        hashMap = collections.Counter(s)
+        minHeap = [(-1*val, key) for key, val in hashMap.items()]
+        heapq.heapify(minHeap)
 
         while minHeap:
 
-            temp = None
+            count, char = heapq.heappop(minHeap)
+            count *= -1
 
-            if res and minHeap[0][1] == res[-1]:
-                temp = heapq.heappop(minHeap)
-                
+            if res and res[-1] == char:
+
                 if not minHeap:
                     return ""
+                
+                newCount, newChar = heapq.heappop(minHeap)
+                newCount *= -1
 
-            count, char = heapq.heappop(minHeap)
-            res += char
+                res += newChar
+                newCount -= 1
 
-            if count + 1 != 0:
-                heapq.heappush(minHeap, (count + 1, char))
+                if newCount:
+                    heapq.heappush(minHeap, (newCount*-1, newChar))
+                
+                heapq.heappush(minHeap, (count*-1, char))
+                
             
-            if temp:
-                heapq.heappush(minHeap, temp)
+            else:
+                res += char
+                count -= 1
+
+                if count:
+                    heapq.heappush(minHeap, (count*-1, char))
         
         return res
+
