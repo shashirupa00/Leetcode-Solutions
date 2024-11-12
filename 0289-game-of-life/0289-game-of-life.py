@@ -5,31 +5,28 @@ class Solution:
         """
 
         rows, cols = len(board), len(board[0])
-        nextState = []
+        
+        nextState = set()
+        nei = [[0, 1], [1, 0], [0, -1], [-1, 0], [1, 1], [-1, -1], [-1, 1], [1, -1]]
 
-        def helper(x, y):
-
-            neighbhors = [[0, 1], [1, 0], [0, -1], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]]
-            totalNeighbhors = 0
-
-            for dx, dy in neighbhors:
-                nx, ny = x + dx, y + dy
-
-                if 0 <= nx < rows and 0 <= ny < cols and board[nx][ny]:
-                    totalNeighbhors += 1
-            
-            return totalNeighbhors
-
-        for i in range(rows):
-            for j in range(cols):
-
-                totalNeighbhors = helper(i, j)
-
-                if board[i][j] and (totalNeighbhors < 2 or totalNeighbhors > 3):
-                    nextState.append([i, j, 0])
+        for i in range(len(board)):
+            for j in range(len(board[0])):
                 
-                if not board[i][j] and (totalNeighbhors == 3):
-                    nextState.append([i, j, 1])
+                live = True if board[i][j] else False
+                totalNeighbors = 0
+                
+                for di, dj in nei:
+                    ni, nj = i + di, j + dj
+                    if ni in range(rows) and nj in range(cols) and board[ni][nj]:
+                        totalNeighbors += 1
+                
+                if live and (totalNeighbors == 2 or totalNeighbors == 3):
+                    nextState.add((i, j))
 
-        for i, j, state in nextState:
-            board[i][j] = state
+                if not live and totalNeighbors == 3:
+                    nextState.add((i, j))
+        
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                board[i][j] = 1 if (i, j) in nextState else 0
+            
