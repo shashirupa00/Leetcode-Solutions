@@ -1,31 +1,27 @@
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        
+        '''
+        - only lower case
+        - diff length of string are possible
+        - can have repeating characters
+        - ordering of the groups doesn't matter
 
-        hashMap, res = {}, []
+        - no empty strings
 
-        def findKey(word):
-            l = []
-            for letter in word:
-                l.append(letter)
+        input -> list of strings: List[str]
+        output -> list of list of strings: List[List[str]]
 
-            return tuple(sorted(l))
+        {(anagram) -> [list of words]}
+        '''
+
+        hashMap = defaultdict(list)
+        res = []
 
         for word in strs:
-            key = findKey(word)
-            if key not in hashMap:
-                hashMap[key] = []
-            hashMap[key].append(word)
-
-        for values in hashMap.values():
-            res.append(values)
+            key = []
+            for char in word:
+                key.append(char)
+            hashMap[tuple(sorted(key))].append(word)
         
-        return res
-
-        
-
-
-
-
-        
-            
-        
+        return [list(value) for value in hashMap.values()]
