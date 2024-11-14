@@ -19,9 +19,7 @@ class Solution:
         res = []
 
         for word in strs:
-            key = []
-            for char in word:
-                key.append(char)
+            key = [char for char in word]
             hashMap[tuple(sorted(key))].append(word)
         
         return [list(value) for value in hashMap.values()]
