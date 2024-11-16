@@ -1,35 +1,21 @@
 class Solution:
     def resultsArray(self, nums: List[int], k: int) -> List[int]:
-        
-        '''
-        [1,2,3,4,3,2,5]
-         i   j
-         [(a[j] or -1)] * 5
 
-         set([4, 5, 6])
+        if k == 1:
+            return nums
 
-        '''
+        res = [-1 for _ in range(len(nums) - k + 1)]
+        count = 1
 
-        res = []
-        l, r = 0, k - 1
-
-        def helper(nums):
-
-            for i in range(1, len(nums)):
-                if nums[i] - nums[i-1] != 1:
-                    return False
+        for i in range(len(nums) - 1):
             
-            return True
-        
-        while r < len(nums):
-            
-            if helper(nums[l:r+1]):
-                res.append(nums[r])
+            if nums[i + 1] - nums[i] == 1:
+                count = count + 1 
             
             else:
-                res.append(-1)
+                count = 1
 
-            l += 1
-            r += 1
-
+            if count >= k:
+                res[i - k + 2] = nums[i + 1]
+        
         return res
