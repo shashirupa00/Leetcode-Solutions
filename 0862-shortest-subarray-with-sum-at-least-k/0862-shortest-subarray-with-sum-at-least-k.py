@@ -3,29 +3,24 @@ class Solution:
         
         arr = []
         prefix = 0
-        deq = collections.deque([])
         res = float("inf")
 
-        for num in nums:
+        for i, num in enumerate(nums):
             prefix += num
-            arr.append(prefix)
+            arr.append((prefix, i))
+        
+        deq = collections.deque([])
 
-        for i, num in enumerate(arr):
+        for num, i in arr:
 
-            while deq and deq[-1][0] > num:
+            while deq and deq[-1][0] <= num:
                 deq.pop()
             
             deq.append((num, i))
-            if num >= k: res = min(res, i+1)
+            if num >= k: res = min(res, i + 1)
 
             while deq and num - deq[0][0] >= k:
                 _, idx = deq.popleft()
-                res = min(res, i-idx)
-        
+                res = min(res, i - idx + 1)
+
         return res if res != float("inf") else -1
-
-
-
-
-        
-        
