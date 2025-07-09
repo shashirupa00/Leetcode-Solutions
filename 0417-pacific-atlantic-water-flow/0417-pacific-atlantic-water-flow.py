@@ -1,30 +1,38 @@
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
-        
-        rows, cols = len(heights), len(heights[0])
-        pacificSet = set()
-        atlanticSet = set()
 
-        def dfs(i, j, visited, prev):
+        if not heights:
+            return []
+
+        rows, cols = len(heights), len(heights[0])
+        pSet, aSet = set(), set()
+
+        def dfs(i, j, oceanSet, prevNode):
             
-            if not (0 <= i < rows) or not (0 <= j < cols) or (i, j) in visited or heights[i][j] < prev:
+            if i not in range(rows) or j not in range(cols) or (i, j) in oceanSet or heights[i][j] < prevNode:
                 return
             
-            visited.add((i, j))
-            
-            dfs(i + 1, j, visited, heights[i][j])
-            dfs(i, j + 1, visited, heights[i][j])
-            dfs(i - 1, j, visited, heights[i][j])
-            dfs(i, j - 1, visited, heights[i][j])
-            
+            oceanSet.add((i, j))
+
+            dfs(i + 1, j, oceanSet, heights[i][j])
+            dfs(i, j + 1, oceanSet, heights[i][j])
+            dfs(i - 1, j, oceanSet, heights[i][j])
+            dfs(i, j - 1, oceanSet, heights[i][j])
+
             return
         
-        for j in range(0, cols):
-            dfs(0, j, pacificSet, heights[0][j])
-            dfs(rows - 1, j, atlanticSet, heights[rows-1][j])
+        for j in range(cols):
+            dfs(0, j, pSet, float("-inf"))
+            dfs(rows - 1, j, aSet, float("-inf"))
         
-        for i in range(0, rows):
-            dfs(i, 0, pacificSet, heights[i][0])
-            dfs(i, cols - 1, atlanticSet, heights[i][cols-1])
+        for i in range(rows):
+            dfs(i, 0, pSet, float("-inf"))
+            dfs(i, cols - 1, aSet, float("-inf"))
+
+        res = []
+
+        for pair in aSet:
+            if pair in pSet:
+                res.append(list(pair))
         
-        return list(pacificSet.intersection(atlanticSet))
+        return res
